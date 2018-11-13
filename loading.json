@@ -1,0 +1,86 @@
+[
+  {
+      "ID": "1de256a8-124f-fe88-05ab-097573a89a2f", 
+      "Node": "centos7.5-192.168.129.128", 
+      "Address": "192.168.129.136", 
+      "TaggedAddresses": {
+          "lan": "192.168.129.136", 
+          "wan": "192.168.129.136"
+      }, 
+      "Meta": {
+          "consul-network-segment": ""
+      }, 
+      "Services": [
+          {
+              "ID": "consul", 
+              "Service": "consul", 
+              "Tags": null, 
+              "Address": "", 
+              "Meta": null, 
+              "Port": 8300, 
+              "EnableTagOverride": false, 
+              "ProxyDestination": "", 
+              "Connect": {
+                  "Native": false, 
+                  "Proxy": null
+              }, 
+              "CreateIndex": 10, 
+              "ModifyIndex": 10
+          }, 
+          {
+              "ID": "cty-gateway-8000", 
+              "Service": "cty-gateway", 
+              "Tags": [
+                  "zh_CN.GBK", 
+                  "one", 
+                  "secure=false"
+              ], 
+              "Address": "192.168.1.74", 
+              "Meta": null, 
+              "Port": 8000, 
+              "EnableTagOverride": false, 
+              "ProxyDestination": "", 
+              "Connect": {
+                  "Native": false, 
+                  "Proxy": null
+              }, 
+              "CreateIndex": 12, 
+              "ModifyIndex": 575
+          }
+      ], 
+      "Checks": [
+          {
+              "Node": "centos7.5-192.168.129.128", 
+              "CheckID": "serfHealth", 
+              "Name": "Serf Health Status", 
+              "Status": "passing", 
+              "Notes": "", 
+              "Output": "Agent alive and reachable", 
+              "ServiceID": "", 
+              "ServiceName": "", 
+              "ServiceTags": null, 
+              "Definition": { }, 
+              "CreateIndex": 10, 
+              "ModifyIndex": 10
+          }, 
+          {
+              "Node": "centos7.5-192.168.129.128", 
+              "CheckID": "service:cty-gateway-8000", 
+              "Name": "Service 'cty-gateway' check", 
+              "Status": "critical", 
+              "Notes": "", 
+              "Output": "Get http://192.168.1.74:8000/actuator/health: dial tcp 192.168.1.74:8000: connect: connection refused", 
+              "ServiceID": "cty-gateway-8000", 
+              "ServiceName": "cty-gateway", 
+              "ServiceTags": [
+                  "zh_CN.GBK", 
+                  "one", 
+                  "secure=false"
+              ], 
+              "Definition": { }, 
+              "CreateIndex": 12, 
+              "ModifyIndex": 963
+          }
+      ]
+  }
+]
