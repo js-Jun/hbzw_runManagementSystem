@@ -102,7 +102,7 @@ import {serviceDetails} from '@/api/index.js'
                         obj.nodeName = res[i].Checks[0].Node
                         obj.registeredStatus = res[i].Checks[0].Status
                         obj.availableStatus = res[i].Checks[1].Status
-                        obj.registeredAddress = res[i].Address
+                        obj.registeredAddress = res[i].Address+':8500'
                     thanArr.push(obj)
                 }
                 this.serviceDetailsData = thanArr

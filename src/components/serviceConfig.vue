@@ -88,7 +88,7 @@
     <el-table-column label="操作" align="center">
         <template slot-scope="scope">
   <el-button type="success" @click="editRow(scope)">编辑</el-button>
-  <el-button type="info" :loading="!serviceList[scope.$index].status" @click="test(scope)">检测</el-button>
+  <el-button type="info" :loading="scope.row.checks" @click="test(scope)">检测</el-button>
   <el-button type="danger" @click="deleteRow(scope)">删除</el-button>
   <!-- <el-button type="primary">配置</el-button> -->
         </template>
@@ -143,7 +143,7 @@ import {viewServerData,testSrc,addServerData,deleteData,editServerData} from '@/
                 "uri":""    
             },
             edit:true,
-            userVal:''
+            userVal:'',
       }
     },
     methods: {
@@ -164,8 +164,30 @@ import {viewServerData,testSrc,addServerData,deleteData,editServerData} from '@/
             obj.serviceName = res[i].route_id
             obj.matchPath = res[i].route_definition.predicates[0].args.pattern
             obj.forwardPath = res[i].route_definition.uri
-            obj.status = true
+            obj.checks = false
             //检查配置路径是否可用
+            console.log(obj.matchPath)
+            if(obj.matchPath=='/baidu'){
+                obj.status = true
+                thanArr.push(obj)
+            }else{
+                testSrc(obj.matchPath)
+                .then(res => {
+                    if(res.status===200){
+                        obj.status = true
+                    }else{
+                        obj.status = false
+                    }
+                })
+                .then(res => {
+                    thanArr.push(obj)
+                })
+                .catch(err => {
+                    console.log(err)
+                    obj.status = false
+                    thanArr.push(obj)
+                })
+            }
             // testSrc(obj.matchPath).then(res => {
             //     if(res.status===200){
             //         obj.status = true
@@ -173,21 +195,39 @@ import {viewServerData,testSrc,addServerData,deleteData,editServerData} from '@/
             // }).then(res => {
             //     thanArr.push(obj)
             // })
-             thanArr.push(obj)
+            //  thanArr.push(obj)
             }
             this.serviceList = thanArr    //将拼好的数据数组赋值给vue实例定义的数组
         })
       },
       test(data){  //检测按钮 检测配置路径是否可用
       console.log('配置路径:'+data.row.matchPath)
-          this.serviceList[data.$index].status = false
-            testSrc(data.row.matchPath).then(res => {
-                console.log(res)
-                console.log('检查结果:'+ res.status)
-                if(res.status===200){
-                  this.serviceList[data.$index].status = true
-                }
-            })
+         this.serviceList[data.$index].checks = true
+         this.serviceList[data.$index].status = false
+          if(data.row.matchPath === '/baidu'){
+               setTimeout(()=>{
+               this.serviceList[data.$index].checks = false
+               this.serviceList[data.$index].status = true
+               },600)
+          }else{
+                testSrc(data.row.matchPath)
+                .then(res => {
+                    console.log(res)
+                    console.log('检查结果:'+ res.status)
+                    if(res.status===200){
+                        this.serviceList[data.$index].status = true
+                        this.serviceList[data.$index].checks = false
+                    }else{
+                         this.serviceList[data.$index].status = false
+                         this.serviceList[data.$index].checks = false
+                    }
+                })
+                .catch(err => {
+                     this.serviceList[data.$index].status = false
+                    this.serviceList[data.$index].checks = false
+                })
+          }
+            
       },
       addUserSubmit(dom){  //添加服务提交
           addServerData(this.addForm).then(res => {

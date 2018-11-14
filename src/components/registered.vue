@@ -55,7 +55,7 @@ import {serviceDetails} from '@/api/index.js'
                  let obj={};
                  obj.serviceName = res[i].Node
                  obj.serviceNum = res[i].Services.length-1
-                 obj.serviceAddress = res[i].Address
+                 obj.serviceAddress = res[i].Address+':8500'
                  thanArr.push(obj)
             }
             this.tableData = thanArr
