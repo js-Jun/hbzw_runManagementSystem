@@ -27,7 +27,7 @@ export default {
         username: '',
         password: '',
         isReload:false,
-        fullscreenLoading: false
+        // fullscreenLoading: false
       },
       rules: {
         username: [
@@ -42,7 +42,11 @@ export default {
   methods:{
     validationLogin(){
       // 发送用户的数据到后台验证 , 如果通过 ,跳到首页展示
-      this.$router.push({name:'Home'})
+      if(this.form.username == 'admin' && this.form.password == 123456){
+        this.$router.push({name:'Home'})
+      }else{
+        this.$message.error('请输入正确的用户名和密码');
+      }
     }
   },
   created(){

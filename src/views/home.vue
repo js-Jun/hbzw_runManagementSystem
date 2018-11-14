@@ -19,40 +19,19 @@
             <i class="el-icon-menu"></i>
             <span slot="title">首页</span>
             </el-menu-item>
-            <el-menu-item index="/ServiceConfig">
-                <i class="el-icon-menu"></i>
-                <span slot="title">服务配置</span>
-            </el-menu-item>
             <el-menu-item index="/Registered">
-                <i class="el-icon-menu"></i>
+                <i class="el-icon-view"></i>
                 <span slot="title">注册中心</span>
             </el-menu-item>
-                <el-submenu index="1">
-                <template slot="title">
-                <i class="el-icon-location"></i>
-                <span>测试一</span>
-                </template>
-                <el-menu-item-group>
-                <el-menu-item index="/test1-2">测试1-2</el-menu-item>
-                </el-menu-item-group>
-                <el-menu-item index="/test1-3">测试1-3</el-menu-item>
-                <el-submenu index="/test1-4">
-                <template slot="title">test1-4</template>
-                <el-menu-item index="/test1-4-1">测试1-4-1</el-menu-item>
-                </el-submenu>
-            </el-submenu>
-            <el-menu-item index="/test2">
-                <i class="el-icon-menu"></i>
-                <span slot="title">测试二</span>
-            </el-menu-item>
-            <el-menu-item index="/test3" disabled>
-                <i class="el-icon-document"></i>
-                <span slot="title">测试三</span>
-            </el-menu-item>
-            <el-menu-item index="/test4">
+            <el-menu-item index="/ServiceConfig">
                 <i class="el-icon-setting"></i>
-                <span slot="title">嵌套第三方网站</span>
+                <span slot="title">服务配置</span>
             </el-menu-item>
+             <el-menu-item index="/ServiceDetails">
+                <i class="el-icon-location-outline"></i>
+                <span slot="title">服务详情</span>
+            </el-menu-item>
+              
             </el-menu>
             </el-aside>
     <!-- 侧边栏 end -->
@@ -62,7 +41,7 @@
                     <i @click="toggleContraction" class="myicon myicon-menu toggle-btn"></i>
                     <div class="system-title">运行管理平台</div>
                    <div>
-                    <span>您好,xxx</span>&nbsp;&nbsp;
+                    <span>您好,admin</span>&nbsp;&nbsp;
                     <el-button type="text" @click="logOut">退出</el-button>
                    </div>
                 </el-header>
@@ -110,7 +89,7 @@ import navtags from './navTagsChildren.vue'
       },
        tishi(){
         this.$notify.success({
-                title: '您好：',
+                title: '您好：admin',
                 message: '欢迎登陆运行管理平台系统',
                 showClose: false
                 });

@@ -36,15 +36,6 @@
             </el-col>
         </el-row>
       </div>
-        <div class="dataShow2">
-            <h3>选项卡展示</h3>
-            <el-row :gutter="30">
-            <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
-            </el-row>
-        </div>
      <div class="dataShow3">
         <h3>图表展示</h3>
         <el-row :gutter="20">
@@ -60,6 +51,15 @@
         </el-col>
 </el-row>
     </div>
+     <div class="dataShow2">
+            <h3>选项卡展示</h3>
+            <el-row :gutter="30">
+            <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
+            <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
+            </el-row>
+        </div>
     </div>
 </template>
 
@@ -93,6 +93,7 @@
         }
 .dataShow1{
      margin-top:20px;
+     margin-bottom:50px;
       .el-row {
     margin-bottom: 20px;
     &:last-child {

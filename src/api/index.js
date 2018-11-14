@@ -15,7 +15,7 @@ export const viewServerData = () => {
 }
 //查看配置路径是否连通
 export const testSrc = params => {
-    return axios.get(params).then(res => res)
+    return axios.get('/api'+params).then(res => res)
 }
 //增加服务
 export const addServerData = params => {

@@ -7,6 +7,7 @@ import login from '@/views/login'
 import home from '@/views/home'
 import serviceConfig from '@/components/serviceConfig'
 import registered from '@/components/registered'
+import serviceDetails from '@/components/serviceDetails'
 import test141 from '@/components/test1-4-1'
 import test2 from '@/components/test2'
 import test4 from '@/components/test4'
@@ -38,6 +39,11 @@ export default new Router({
           path:'/Registered',
           name:'Registered',
           component:registered
+        },
+        {
+          path:'/ServiceDetails',
+          name:'ServiceDetails',
+          component:serviceDetails
         },
         {
           path:'/test1-4-1',
