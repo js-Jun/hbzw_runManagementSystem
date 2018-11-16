@@ -10,7 +10,7 @@
         <el-input v-model="form.username" placeholder="账户" prefix-icon="myicon myicon-user"></el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input v-model="form.password" placeholder="密码" prefix-icon="myicon myicon-key"></el-input>
+        <el-input v-model="form.password" type="password" placeholder="密码" prefix-icon="myicon myicon-key" @keyup.enter.native="validationLogin"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" class="login-btn" @click="validationLogin">登录</el-button>

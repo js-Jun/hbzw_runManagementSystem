@@ -6,8 +6,8 @@ Vue.use(Vuex)
 
 //定义数据存储仓库（状态管理）
 const state = {
-    recordNavItem:[{name:'首页',path:'/index'}], //用户选中的导航菜单项
-    activeItemIndex:"/index"
+    recordNavItem:[{name:'首页',path:'/home/index'}], //用户选中的导航菜单项
+    activeItemIndex:'/home/index'
 }
 
 //定义用于修改数据的方法

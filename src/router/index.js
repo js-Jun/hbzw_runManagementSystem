@@ -23,40 +23,40 @@ export default new Router({
       path:'/home',
       name:'Home',
       component:home,
-      redirect:{path:'/index'},
+      redirect:{name:'Index'},
       children:[
         {
-          path:'/index',
+          path:'index',
           name:'Index',
           component:index
         },
         {
-          path:'/ServiceConfig',
+          path:'ServiceConfig',
           name:'ServiceConfig',
           component:serviceConfig
         },
         {
-          path:'/Registered',
+          path:'Registered',
           name:'Registered',
           component:registered
         },
         {
-          path:'/ServiceDetails',
+          path:'ServiceDetails',
           name:'ServiceDetails',
           component:serviceDetails
         },
         {
-          path:'/test1-4-1',
+          path:'test1-4-1',
           name:'Test1-4-1',
           component:test141
         },
         {
-          path:'/test2',
+          path:'test2',
           name:'Test2',
           component:test2
         },
         {
-          path:'/test4',
+          path:'test4',
           name:'Test4',
           component:test4
         },

@@ -15,23 +15,22 @@
             :router=true
             active-text-color="#409EFF"
             :collapse="isCollapse">
-            <el-menu-item index="/index">
+            <el-menu-item index="/home/index">
             <i class="el-icon-menu"></i>
             <span slot="title">首页</span>
             </el-menu-item>
-            <el-menu-item index="/Registered">
+            <el-menu-item index="/home/Registered">
                 <i class="el-icon-view"></i>
                 <span slot="title">注册中心</span>
             </el-menu-item>
-            <el-menu-item index="/ServiceConfig">
-                <i class="el-icon-setting"></i>
-                <span slot="title">服务配置</span>
-            </el-menu-item>
-             <el-menu-item index="/ServiceDetails">
+            <el-menu-item index="/home/ServiceDetails">
                 <i class="el-icon-location-outline"></i>
                 <span slot="title">服务详情</span>
             </el-menu-item>
-              
+            <el-menu-item index="/home/ServiceConfig">
+                <i class="el-icon-setting"></i>
+                <span slot="title">服务配置</span>
+            </el-menu-item>  
             </el-menu>
             </el-aside>
     <!-- 侧边栏 end -->
@@ -97,6 +96,9 @@ import navtags from './navTagsChildren.vue'
         linkPath(){
            console.log(123123)
         }
+    },
+    created(){
+        this.$router.push({name:'Index'})
     },
     mounted(){
         this.tishi()

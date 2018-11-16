@@ -6,7 +6,7 @@
             <el-col :span="8"><div class="grid-content">
                 <div class="test1">
                     <div class="test1box">
-                        <h5>1,000</h5>
+                        <h5>{{num}}</h5>
                         <span></span>
                         <p>日活跃数</p>
                     </div>
@@ -16,7 +16,7 @@
                 <div class="grid-content">
                       <div class="test1">
                     <div class="test1box">
-                        <h5>1,000</h5>
+                        <h5>{{num}}</h5>
                         <span></span>
                         <p>日活跃数</p>
                     </div>
@@ -27,7 +27,7 @@
                 <div class="grid-content">
                       <div class="test1">
                     <div class="test1box">
-                        <h5>1,000</h5>
+                        <h5>{{num}}</h5>
                         <span></span>
                         <p>日活跃数</p>
                     </div>
@@ -77,8 +77,19 @@
           { '日期': '1/5', '访问用户': 3792, '下单用户': 3492, '下单率': 0.323 },
           { '日期': '1/6', '访问用户': 4593, '下单用户': 4293, '下单率': 0.78 }
         ]
-      }
+      },
+      num:0
     }
+  },
+  created(){
+      var Time = setInterval(()=>{
+          if(this.num <= 999){
+          this.num = this.num+2
+          }else{
+              this.num = '1,000'
+            clearInterval(Time)
+          }
+      },0.00001)
   }
 }   
 </script>

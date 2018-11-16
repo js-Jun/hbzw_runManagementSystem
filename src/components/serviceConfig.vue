@@ -18,7 +18,7 @@
         <el-form-item label="配置路径" prop="password">
         <el-input v-model="addForm.predicates[0].args.pattern" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="转发地址" prop="email">
+        <el-form-item label="转发地址" prop="uri">
         <el-input v-model="addForm.uri" auto-complete="off"></el-input>
         </el-form-item>
     </el-form>
@@ -127,7 +127,7 @@ import {viewServerData,testSrc,addServerData,deleteData,editServerData} from '@/
                         "name":"Path"
                     }
                         ],
-                    "uri":""    
+                    "uri":"http://"    
                 },
            editForm:{
                 "filters":[],
@@ -166,12 +166,13 @@ import {viewServerData,testSrc,addServerData,deleteData,editServerData} from '@/
             obj.forwardPath = res[i].route_definition.uri
             obj.checks = false
             //检查配置路径是否可用
-            console.log(obj.matchPath)
-            if(obj.matchPath=='/baidu'){
+            console.log(obj)
+            if(obj.forwardPath=='http://www.jd.com' || obj.forwardPath=='http://www.baidu.com'){
                 obj.status = true
                 thanArr.push(obj)
             }else{
-                testSrc(obj.matchPath)
+                let matchAddressStr = obj.matchPath.replace('**','health')
+                testSrc(matchAddressStr)
                 .then(res => {
                     if(res.status===200){
                         obj.status = true
@@ -188,6 +189,8 @@ import {viewServerData,testSrc,addServerData,deleteData,editServerData} from '@/
                     thanArr.push(obj)
                 })
             }
+            
+            
             // testSrc(obj.matchPath).then(res => {
             //     if(res.status===200){
             //         obj.status = true
@@ -201,16 +204,18 @@ import {viewServerData,testSrc,addServerData,deleteData,editServerData} from '@/
         })
       },
       test(data){  //检测按钮 检测配置路径是否可用
+      console.log('点击了')
       console.log('配置路径:'+data.row.matchPath)
          this.serviceList[data.$index].checks = true
          this.serviceList[data.$index].status = false
-          if(data.row.matchPath === '/baidu'){
+          if(data.row.forwardPath === 'http://www.jd.com'|| data.row.forwardPath =='http://www.baidu.com'){
                setTimeout(()=>{
                this.serviceList[data.$index].checks = false
                this.serviceList[data.$index].status = true
                },600)
           }else{
-                testSrc(data.row.matchPath)
+              let matchAddressStr = data.row.matchPath.replace('**','health')
+                testSrc(matchAddressStr)
                 .then(res => {
                     console.log(res)
                     console.log('检查结果:'+ res.status)
@@ -228,11 +233,24 @@ import {viewServerData,testSrc,addServerData,deleteData,editServerData} from '@/
                 })
           }
             
-      },
+      }, 
       addUserSubmit(dom){  //添加服务提交
           addServerData(this.addForm).then(res => {
               this.initList()                   //初始化列表数据
               this.addDialogFormVisible = false //关闭添加模态框
+              this.addForm = {                 //添加服务数据储存
+                    "filters":[],
+                    "id":"",
+                    "order":0,
+                    "predicates":[{
+                        "args":{
+                            "pattern":""
+                        },
+                        "name":"Path"
+                    }
+                        ],
+                    "uri":"http://"    
+                }
           })
       },
       deleteRow(scope){    //删除服务

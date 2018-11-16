@@ -12,7 +12,7 @@
             </el-table-column>
             <el-table-column
             prop="serviceName"
-            label="机器名"
+            label="节点名称"
             align="center"
             width="300">
             </el-table-column>

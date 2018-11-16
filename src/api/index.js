@@ -23,7 +23,7 @@ export const addServerData = params => {
 }
 //删除服务 两个api都要执行
 export const deleteData = params => {
-    return axios.all([axios.get('/api/route/routes/'+params),axios.get('/route/delete/'+params)]).then(axios.spread(function (res1, res2) {
+    return axios.all([axios.get('/api/route/routes/'+params),axios.get('/api/route/delete/'+params)]).then(axios.spread(function (res1, res2) {
         return {res1,res2}
       }))
 }
