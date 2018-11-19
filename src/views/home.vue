@@ -3,7 +3,6 @@
         <el-container>
     <!-- 侧边栏 start -->
             <el-aside width="auto">
-
             <el-menu
             :default-active="$store.state.activeItemIndex"
             class="el-menu-vertical-demo"
@@ -15,6 +14,11 @@
             :router=true
             active-text-color="#409EFF"
             :collapse="isCollapse">
+            <el-menu-item>
+                <div class="logoBox">
+                    <img src="../assets/homeLogo.png" width="140px" height="40px" alt="">
+                </div>
+            </el-menu-item>
             <el-menu-item index="/home/index">
             <i class="el-icon-menu"></i>
             <span slot="title">首页</span>
@@ -38,7 +42,7 @@
     <!-- 头部 start -->
                 <el-header>
                     <i @click="toggleContraction" class="myicon myicon-menu toggle-btn"></i>
-                    <div class="system-title">运行管理平台</div>
+                    <div class="system-title">运行管理系统</div>
                    <div>
                     <span>您好,admin</span>&nbsp;&nbsp;
                     <el-button type="text" @click="logOut">退出</el-button>
@@ -120,7 +124,13 @@ import navtags from './navTagsChildren.vue'
   .el-aside {
     background-color: #545c64;
     .el-menu{
-        margin-top:60px
+        // margin-top: 10px;
+        .logoBox{
+            height: 60px;
+        }
+    }
+    .el-menu-item:first-child:focus, .el-menu-item:first-child:hover{
+        background-color: #545c64 !important;
     }
   }
   .el-header {
