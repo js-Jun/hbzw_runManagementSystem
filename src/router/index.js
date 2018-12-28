@@ -28,22 +28,26 @@ export default new Router({
         {
           path:'index',
           name:'Index',
-          component:index
+          component:index,
+          meta:{name:'首页'}
         },
         {
           path:'ServiceConfig',
           name:'ServiceConfig',
-          component:serviceConfig
+          component:serviceConfig,
+          meta:{name:'路由管理'}
         },
         {
           path:'Registered',
           name:'Registered',
-          component:registered
+          component:registered,
+          meta:{name:'注册中心'}
         },
         {
           path:'ServiceDetails',
           name:'ServiceDetails',
-          component:serviceDetails
+          component:serviceDetails,
+          meta:{name:'服务管理'}
         },
         {
           path:'test1-4-1',
@@ -53,7 +57,8 @@ export default new Router({
         {
           path:'test2',
           name:'Test2',
-          component:test2
+          component:test2,
+          meta:{name:'test2'}
         },
         {
           path:'test4',

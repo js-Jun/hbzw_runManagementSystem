@@ -3,23 +3,45 @@
     <el-row>
         <el-col :span="24">
             <!-- 给组件绑定原生事件的话，需要一个.native的修饰符 -->
-            <el-input placeholder="请输入服务名称" class="search-input" v-model="userVal">
+            <el-input placeholder="请输入路由id" class="search-input" @keyup.enter.native="userSearch" v-model="userVal">
             <el-button slot="append" icon="el-icon-search" @click="userSearch"></el-button>
             </el-input>
-            <el-button type="success" plain @click="addDialogFormVisible=true">添加服务</el-button>
+            <el-button type="success" plain @click="addDialogFormVisible=true">添加路由</el-button>
         </el-col>
     </el-row>
     <!-- 添加服务 start -->
-    <el-dialog title="添加服务" :visible.sync="addDialogFormVisible">
-    <el-form :model="addForm" label-width="80px" ref="addUserForm">
-        <el-form-item label="服务名" prop="username">
+    <el-dialog title="添加路由" :visible.sync="addDialogFormVisible">
+    <el-form :model="addForm" :rules="ServerRules" label-width="82px" ref="addUserForm">
+        <el-form-item label="路由id " prop="id">
         <el-input v-model="addForm.id" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="配置路径" prop="password">
-        <el-input v-model="addForm.predicates[0].args.pattern" auto-complete="off"></el-input>
+        <el-form-item label="配置路径" prop="path">
+        <el-input v-model="addForm.path" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="转发地址" prop="uri">
-        <el-input v-model="addForm.uri" auto-complete="off"></el-input>
+        <el-form-item label="转发地址" prop="url">
+        <el-input v-model="addForm.url" auto-complete="off" placeholder="http://"></el-input>
+        </el-form-item>
+        <el-form-item label="转发服务名" prop="serviceId">
+        <el-input v-model="addForm.serviceId" auto-complete="off"></el-input>
+        </el-form-item>
+        <div class="clearfix">
+        <el-form-item label="去掉前缀" prop="stripPrefix" class="fl" style="margin-right:50px">
+            <el-switch
+            v-model="addForm.stripPrefix"
+            active-color="#13ce66"
+            inactive-color="#ff4949">
+            </el-switch>
+        </el-form-item>
+        <el-form-item label="是否启用 " prop="enabled" class="fl">
+            <el-switch
+            v-model="addForm.enabled"
+            active-color="#13ce66"
+            inactive-color="#ff4949">
+            </el-switch>
+        </el-form-item>
+        </div>
+        <el-form-item label="路由描述" prop="description">
+        <el-input v-model="addForm.description" auto-complete="off"></el-input>
         </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -30,66 +52,132 @@
     <!-- 添加服务 end -->
 
     <!-- 编辑服务 start -->
-        <el-dialog title="编辑服务" :visible.sync="editDialogFormVisible">
-    <el-form :model="editForm" label-width="80px" ref="editUserForm">
-        <el-form-item label="服务名" prop="username">
+       <el-dialog title="编辑路由" :visible.sync="editDialogFormVisible">
+        <el-form :model="editForm" :rules="ServerRules" label-width="82px" ref="editUserForm">
+        <el-form-item label="路由id " prop="id">
         <el-input v-model="editForm.id" auto-complete="off" :disabled="edit"></el-input>
         </el-form-item>
-        <el-form-item label="配置路径" prop="password">
-        <el-input v-model="editForm.predicates[0].args.pattern" auto-complete="off"></el-input>
+        <el-form-item label="配置路径" prop="path">
+        <el-input v-model="editForm.path" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="转发地址" prop="email">
-        <el-input v-model="editForm.uri" auto-complete="off"></el-input>
+        <el-form-item label="转发地址" prop="url">
+        <el-input v-model="editForm.url" auto-complete="off" placeholder="http://"></el-input>
+        </el-form-item>
+        <el-form-item label="转发服务名" prop="serviceId">
+        <el-input v-model="editForm.serviceId" auto-complete="off"></el-input>
+        </el-form-item>
+        <div class="clearfix">
+        <el-form-item label="去掉前缀" prop="stripPrefix" class="fl" style="margin-right:50px">
+            <el-switch
+            v-model="editForm.stripPrefix"
+            active-color="#13ce66"
+            inactive-color="#ff4949">
+            </el-switch>
+        </el-form-item>
+        <el-form-item label="是否启用 " prop="enabled" class="fl">
+            <el-switch
+            v-model="editForm.enabled"
+            active-color="#13ce66"
+            inactive-color="#ff4949">
+            </el-switch>
+        </el-form-item>
+        </div>
+        <el-form-item label="路由描述" prop="description">
+        <el-input v-model="editForm.description" auto-complete="off"></el-input>
         </el-form-item>
     </el-form>
-        <div slot="footer" class="dialog-footer">
-            <el-button @click="editDialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="editUserSubmit('editUserForm')">确 定</el-button>
-        </div>
+    <div slot="footer" class="dialog-footer">
+        <el-button @click="editDialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="editUserSubmit('editUserForm')">确 定</el-button>
+    </div>
     </el-dialog>
     <!-- 编辑服务 end -->
     <el-table
     :data="serviceList"
     border
-    style="width: 100%;font-size:16px;margin-top:10px;">
+    style="width:100%;font-size:16px;margin-top:10px">
     <el-table-column
         type="index"
+        fixed
         label="序号"
-        align="center"
-        width="80">
+        align="center">
     </el-table-column>
     <el-table-column
-        prop="serviceName"
-        label="服务名称"
+        prop="id"
+        fixed
+        label="路由id"
         align="center"
-        width="180">
+        width="130">
     </el-table-column>
     <el-table-column
-        prop="matchPath"
+        prop="path"
         label="匹配路径"
         align="center"
-        width="180">
+        width="200">
     </el-table-column>
     <el-table-column
-        prop="forwardPath"
+        prop="url"
         align="center"
-        label="转发地址">
+        label="转发地址"
+        width="200">
+    <template slot-scope="scope">
+        {{scope.row.url ? scope.row.url : '无'}}   
+    </template>
     </el-table-column>
-    <el-table-column 
-        label="是否可用" 
-        align="center" 
-        width="180">
+    <el-table-column
+        prop="serviceId"
+        align="center"
+        label="转发服务名"
+        width="200">
+    <template slot-scope="scope">
+        {{scope.row.serviceId ? scope.row.serviceId : '无'}}   
+    </template>
+    </el-table-column>
+   <!-- <el-table-column
+      label="是否可用"
+      align="center"
+      width="100">
         <template slot-scope="scope">
-            <!-- <el-switch v-model="value"></el-switch> -->
-             <el-button type="success" icon="el-icon-check" circle v-if="serviceList[scope.$index].status"></el-button>
-             <el-button type="danger" icon="el-icon-close" circle v-else></el-button>
+             <el-button type="success" icon="el-icon-check" style="font-size:12px" circle v-if="serviceList[scope.$index].status"></el-button>
+             <el-button type="danger" icon="el-icon-close" style="font-size:12px" circle v-else></el-button>
+        </template>
+    </el-table-column> -->
+    <el-table-column
+    prop="enabled"
+    align="center"
+    label="是否启用"
+    width="100">
+    <template slot-scope="scope">
+        {{scope.row.enabled ? '是' : '否'}}   
+    </template>
+    </el-table-column>
+    <el-table-column
+    prop="stripPrefix"
+    align="center"
+    label="去掉前缀"
+    width="100">
+    <template slot-scope="scope">
+        {{scope.row.stripPrefix ? '是' : '否'}}
+    </template>
+    </el-table-column>
+    <el-table-column
+        prop="description"
+        align="center"
+        label="路由描述"
+        width="200">
+        <template slot-scope="scope">
+            {{scope.row.description ? scope.row.description : '无'}}   
         </template>
     </el-table-column>
-    <el-table-column label="操作" align="center">
+    <el-table-column 
+    label="操作" 
+    align="center" 
+    fixed="right" 
+    width="300">
         <template slot-scope="scope">
-  <el-button type="success" @click="editRow(scope)">编辑</el-button>
-  <el-button type="info" :loading="scope.row.checks" @click="test(scope)">检测</el-button>
-  <el-button type="danger" @click="deleteRow(scope)">删除</el-button>
+            <el-button type="success" @click="editRow(scope)">编辑</el-button>
+            <!-- <el-button type="info" :loading="scope.row.checks" @click="test(scope)">检测</el-button> -->
+            <el-button type="danger" @click="deleteRow(scope.row.id)">删除</el-button>
   <!-- <el-button type="primary">配置</el-button> -->
         </template>
     </el-table-column>
@@ -116,31 +204,31 @@ import {viewServerData,testSrc,addServerData,deleteData,editServerData} from '@/
           addDialogFormVisible:false,//添加服务模态框的显示隐藏
           editDialogFormVisible:false,//编辑服务模态框的显示隐藏
           serviceList:[],            //服务列表信息
-          addForm: {                 //添加服务数据储存
-                    "filters":[],
-                    "id":"",
-                    "order":0,
-                    "predicates":[{
-                        "args":{
-                            "pattern":""
-                        },
-                        "name":"Path"
-                    }
-                        ],
-                    "uri":"http://"    
-                },
-           editForm:{
-                "filters":[],
+          addForm: {                 //添加服务数据
                 "id":"",
-                "order":0,
-                "predicates":[{
-                    "args":{
-                        "pattern":""
-                    },
-                    "name":"Path"
-                }
-                    ],
-                "uri":""    
+                "path":"",
+                "url":"",
+                "serviceId": "",
+                "stripPrefix": true,
+                "enabled": true,
+                "description": ""
+            },
+            ServerRules:{   //增加服务校验规则
+                id:[
+                    { required: true, message: '请输入路由id', trigger: 'blur' }
+                ],
+                path:[
+                    { required: true, message: '请输入匹配路径', trigger: 'blur' }
+                ]
+            },
+           editForm:{                 //编辑服务数据
+               "id":"",
+                "path":"",
+                "url":"",
+                "serviceId": "",
+                "stripPrefix": true,
+                "enabled": true,
+                "description": ""
             },
             edit:true,
             userVal:'',
@@ -154,140 +242,124 @@ import {viewServerData,testSrc,addServerData,deleteData,editServerData} from '@/
     //     console.log(`当前页: ${val}`);
     //   },
 
-      initList (){   //初始化数据
+      initList(){   //初始化数据
         viewServerData().then(res => {
             console.log(res)
-            console.log(this.serviceList)
-            var thanArr = [];
-            for(let i = 0; i < res.length; i++){
-            let obj={};
-            obj.serviceName = res[i].route_id
-            obj.matchPath = res[i].route_definition.predicates[0].args.pattern
-            obj.forwardPath = res[i].route_definition.uri
-            obj.checks = false
-            //检查配置路径是否可用
-            console.log(obj)
-            if(obj.forwardPath=='http://www.jd.com' || obj.forwardPath=='http://www.baidu.com'){
-                obj.status = true
-                thanArr.push(obj)
+            if(res.code === 1){
+                //获取数据成功
+                this.serviceList = res.data
             }else{
-                let matchAddressStr = obj.matchPath.replace('**','health')
-                testSrc(matchAddressStr)
-                .then(res => {
-                    if(res.status===200){
-                        obj.status = true
-                    }else{
-                        obj.status = false
-                    }
-                })
-                .then(res => {
-                    thanArr.push(obj)
-                })
-                .catch(err => {
-                    console.log(err)
-                    obj.status = false
-                    thanArr.push(obj)
-                })
+                this.$message.error(res.msg);
             }
-            
-            
-            // testSrc(obj.matchPath).then(res => {
-            //     if(res.status===200){
-            //         obj.status = true
-            //     }
-            // }).then(res => {
-            //     thanArr.push(obj)
-            // })
-            //  thanArr.push(obj)
-            }
-            this.serviceList = thanArr    //将拼好的数据数组赋值给vue实例定义的数组
         })
       },
-      test(data){  //检测按钮 检测配置路径是否可用
-      console.log('点击了')
-      console.log('配置路径:'+data.row.matchPath)
-         this.serviceList[data.$index].checks = true
-         this.serviceList[data.$index].status = false
-          if(data.row.forwardPath === 'http://www.jd.com'|| data.row.forwardPath =='http://www.baidu.com'){
-               setTimeout(()=>{
-               this.serviceList[data.$index].checks = false
-               this.serviceList[data.$index].status = true
-               },600)
-          }else{
-              let matchAddressStr = data.row.matchPath.replace('**','health')
-                testSrc(matchAddressStr)
-                .then(res => {
-                    console.log(res)
-                    console.log('检查结果:'+ res.status)
-                    if(res.status===200){
-                        this.serviceList[data.$index].status = true
-                        this.serviceList[data.$index].checks = false
-                    }else{
-                         this.serviceList[data.$index].status = false
-                         this.serviceList[data.$index].checks = false
-                    }
-                })
-                .catch(err => {
-                     this.serviceList[data.$index].status = false
-                    this.serviceList[data.$index].checks = false
-                })
-          }
-            
-      }, 
+    //   test(data){  //检测按钮 检测配置路径是否可用
+    //   console.log('点击了')
+    //   console.log('配置路径:'+data.row.matchPath)
+    //      this.serviceList[data.$index].checks = true
+    //      this.serviceList[data.$index].status = false
+    //       if(data.row.forwardPath === 'http://www.jd.com'|| data.row.forwardPath =='http://www.baidu.com'){
+    //            setTimeout(()=>{
+    //            this.serviceList[data.$index].checks = false
+    //            this.serviceList[data.$index].status = true
+    //            },600)
+    //       }else{
+    //           let matchAddressStr = data.row.matchPath.replace('**','health')
+    //             testSrc(matchAddressStr)
+    //             .then(res => {
+    //                 console.log(res)
+    //                 console.log('检查结果:'+ res.status)
+    //                 if(res.status===200){
+    //                     this.serviceList[data.$index].status = true
+    //                     this.serviceList[data.$index].checks = false
+    //                 }else{
+    //                      this.serviceList[data.$index].status = false
+    //                      this.serviceList[data.$index].checks = false
+    //                 }
+    //             })
+    //             .catch(err => {
+    //                  this.serviceList[data.$index].status = false
+    //                 this.serviceList[data.$index].checks = false
+    //             })
+    //       }        
+    //   }, 
       addUserSubmit(dom){  //添加服务提交
-          addServerData(this.addForm).then(res => {
-              this.initList()                   //初始化列表数据
-              this.addDialogFormVisible = false //关闭添加模态框
-              this.addForm = {                 //添加服务数据储存
-                    "filters":[],
-                    "id":"",
-                    "order":0,
-                    "predicates":[{
-                        "args":{
-                            "pattern":""
-                        },
-                        "name":"Path"
-                    }
-                        ],
-                    "uri":"http://"    
+        this.$refs[dom].validate((valid) => {
+        if(!this.addForm.url && !this.addForm.serviceId){
+            this.$message.error('抱歉，转发地址与转发服务名至少填写一项');
+            return
+        }
+        if (valid) {
+            addServerData(this.addForm)
+            .then(res => {
+                console.log(res)
+                if(res.code === 1){
+                    console.log('提交成功')
+                    this.serviceList = res.data //data为此时最新的数据
+                    this.addDialogFormVisible = false
+                    this.$refs[dom].resetFields();
+                    this.$message({
+                    showClose: true,
+                    message: '添加成功',
+                    type: 'success'
+                    });
+                }else{
+                    this.$message.error(res.msg);
                 }
-          })
+            })
+        } else {
+            console.log('error submit!!');
+        }
+        });
       },
-      deleteRow(scope){    //删除服务
-          deleteData(scope.row.serviceName).then(res => {
+      deleteRow(id){  //删除服务
+          deleteData(id).then(res => {
               console.log(res)
-              if(res.res1.status===200 && res.res2.status===200){
-                  this.$message({
+              if(res.code === 1){
+                this.serviceList = res.data //data为此时最新的数据
+                this.$message({
                 message: '删除成功！',
                 type: 'success'
                 });
-                    this.initList() //初始化列表数据
+              }else{
+                  this.$message.error(res.msg);
               }
           })
       },
       editRow(scope){  //编辑当前服务模态框信息初始化
-          this.editDialogFormVisible=true
-          console.log(scope)
-        this.editForm.id = scope.row.serviceName //服务名
-        this.editForm.predicates[0].args.pattern = scope.row.matchPath  //配置路径
-        this.editForm.uri = scope.row.forwardPath   //转发地址
+        this.editForm = scope.row
+        this.editDialogFormVisible = true
       },
       editUserSubmit(dom){ //编辑服务信息提交
-        editServerData(this.editForm).then(res => {
-            console.log(res)
-            if(res.status === 200){
-                this.$message({
-                    message: '编辑成功！',
+        this.$refs[dom].validate((valid) => {
+        if(!this.editForm.url && !this.editForm.serviceId){
+        this.$message.error('抱歉，转发地址与转发服务名至少填写一项');
+        return
+        }
+        if (valid) {
+            editServerData(this.editForm)
+            .then(res => {
+                if(res.code === 1){
+                    this.serviceList = res.data //data为此时最新的数据
+                    this.editDialogFormVisible = false
+                    this.$refs[dom].resetFields();
+                    this.$message({
+                    showClose: true,
+                    message: '编辑成功',
                     type: 'success'
-                });
-            }
-            this.initList()                   //初始化列表数据
-            this.editDialogFormVisible = false //关闭添加模态框
-        })
+                    });
+                }else{
+                    this.$message.error(res.msg);
+                }
+            })
+        } else {
+            console.log('error submit!!');
+        }
+        });
       },
       userSearch(){   //搜索按钮 
         if(this.userVal){
-            var newArr= this.serviceList.filter(item => item.serviceName.indexOf(this.userVal) !== -1)
+            var newArr= this.serviceList.filter(item => item.id.indexOf(this.userVal) !== -1)
             this.serviceList = newArr
         }else{
             this.initList()

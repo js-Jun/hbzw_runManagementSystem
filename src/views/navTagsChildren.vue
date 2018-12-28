@@ -16,21 +16,28 @@ export default {
     methods:{
        linkTag(index,path){ 
            var path = this.tags[index].path;
+           console.log('点击元素')
+           console.log(path)
            this.$router.push(path);  //跳转到用户选中的菜单项 
-           this.$store.commit('setActiveItemIndex',path)  //设置左侧导航菜单高亮
        },
        overBtn(index){ //删除选中的菜单项
+       console.log('点击删除')
            this.$store.commit('deleteNavItem',index);   //删除用户选中的菜单项
            let recordNavItem = this.$store.state.recordNavItem;
            this.$router.push({path:recordNavItem[recordNavItem.length-1].path}) //跳转到最后一个path
-           this.$store.commit('setActiveItemIndex',recordNavItem[recordNavItem.length-1].path)  //设置左侧导航菜单高亮
-
        }
-
     },
     created(){
         this.tags = this.$store.state.recordNavItem;
+        console.log(this.$route.meta.name)
     },
+    watch:{
+        $route(to,from){
+             let curObj = {name:to.meta.name,path:to.path}
+             this.$store.commit('setActiveItemIndex',to.path) //设置左侧导航栏的高亮
+             this.$store.commit('addNavItem',curObj)  //添加左侧的导航项
+        }
+    }
   }
 </script>
 <style lang="scss" scoped>

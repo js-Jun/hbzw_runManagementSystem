@@ -5,7 +5,7 @@
    </div>
     <el-form ref="form" :model="form" class="container" :rules="rules">
       <el-form-item>
-        <h1 class="systemName">鄂汇办-运行管理系统</h1>
+        <h1 class="systemName">楚天云-统一应用服务网关</h1>
         <h3 class="loginTitle">用户登录</h3>
       </el-form-item>
       <el-form-item prop="username">
@@ -67,7 +67,7 @@ if (this.$store.state.recordNavItem.length > 1) { // 判断是否已经刷新
   width: 100%;
   height: 100%;
   background:url('../assets/bgcLoginImg.png') no-repeat;
-  background-size:100% 100%;  
+  background-size:cover;  
   background-position: center 40%;
   .logoImg{
     position: absolute;

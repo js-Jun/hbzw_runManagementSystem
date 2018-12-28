@@ -6,23 +6,22 @@ const path = require('path')
 
 module.exports = {
   dev: {
-
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {  //配置跨域
-          '/api': { //替换代理地址名称
-            target: 'http://192.168.77.153:8000/', //需要被代理的api根域名  http://192.168.191.2:8500/
+          '/route': { //替换代理地址名称
+            target: 'http://192.168.1.25:8005/', //需要被代理的api根域名  http://192.168.191.2:8500/
           changeOrigin: true, //可否跨域
           pathRewrite: {
-          '^/api': '' //重写接口，去掉/api
+          '^/route': '' //重写接口，去掉/api
           }
       },
-      '/service': { //替换代理地址名称
-        target: 'http://192.168.77.155:8500/', //需要被代理的api根域名  http://192.168.191.2:8500/
+      '/reg': { //替换代理地址名称
+        target: 'http://192.168.1.25:4004/', //需要被代理的api根域名  http://192.168.191.2:8500/
       changeOrigin: true, //可否跨域 
       pathRewrite: {
-      '^/service': '' //重写接口，去掉/api
+      '^/reg': '' //重写接口，去掉/api
       }
   },
     },

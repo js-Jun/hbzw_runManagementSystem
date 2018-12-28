@@ -11,35 +11,42 @@
             width="80">
             </el-table-column>
             <el-table-column
-            prop="serviceName"
+            prop="nodeName"
             label="节点名称"
             align="center"
             width="300">
             </el-table-column>
             <el-table-column
-            prop="serviceNum"
-            label="服务数量"
+            prop="instanceNum"
+            label="实例数量"
             align="center"
             width="150">
             </el-table-column>
             <el-table-column
-            prop="serviceAddress"
+            prop="onlineNum"
             align="center"
-            label="地址"
+            label="已上线数量"
             width="300">
             </el-table-column>
             <el-table-column
-            prop=""
-            label="其他">
-
+            prop="outLineNum"
+            align="center"
+            label="已下线数量"
+            width="300">
+            </el-table-column>
+            <el-table-column
+            prop="desc"
+            label="描述">
+            <template slot-scope="scope">
+              {{scope.row.desc ? scope.row.desc:'无'}}
+            </template>
             </el-table-column>
         </el-table>
         </el-card>
     </div>
 </template>
-
 <script>
-import {serviceDetails} from '@/api/index.js'
+import {registeredCenter} from '@/api/index.js'
  export default {
     data() {
       return {
@@ -48,17 +55,10 @@ import {serviceDetails} from '@/api/index.js'
     },
     methods: {
       initList (){
-        serviceDetails().then(res => {
-            console.log(res)
-            var thanArr = [];
-            for(let i = 0; i < res.length; i++){
-                 let obj={};
-                 obj.serviceName = res[i].Node
-                 obj.serviceNum = res[i].Services.length-1
-                 obj.serviceAddress = res[i].Address+':8500'
-                 thanArr.push(obj)
-            }
-            this.tableData = thanArr
+        registeredCenter().then(res => {
+          if(res.code === 1){
+            this.tableData = res.data
+          }
         })
       }
     },

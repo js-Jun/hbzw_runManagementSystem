@@ -14,7 +14,7 @@
             :router=true
             active-text-color="#409EFF"
             :collapse="isCollapse">
-            <el-menu-item>
+            <el-menu-item index="0">
                 <div class="logoBox">
                     <img src="../assets/homeLogo.png" width="140px" height="40px" alt="">
                 </div>
@@ -27,14 +27,18 @@
                 <i class="el-icon-view"></i>
                 <span slot="title">注册中心</span>
             </el-menu-item>
-            <el-menu-item index="/home/ServiceDetails">
-                <i class="el-icon-location-outline"></i>
-                <span slot="title">服务详情</span>
-            </el-menu-item>
             <el-menu-item index="/home/ServiceConfig">
                 <i class="el-icon-setting"></i>
-                <span slot="title">服务配置</span>
-            </el-menu-item>  
+                <span slot="title">路由管理</span>
+            </el-menu-item> 
+            <el-menu-item index="/home/ServiceDetails">
+                <i class="el-icon-location-outline"></i>
+                <span slot="title">服务管理</span>
+            </el-menu-item>
+            <el-menu-item index="/home/test2">
+                <i class="el-icon-location-outline"></i>
+                <span slot="title">测试2</span>
+            </el-menu-item>
             </el-menu>
             </el-aside>
     <!-- 侧边栏 end -->
@@ -42,7 +46,7 @@
     <!-- 头部 start -->
                 <el-header>
                     <i @click="toggleContraction" class="myicon myicon-menu toggle-btn"></i>
-                    <div class="system-title">运行管理系统</div>
+                    <div class="system-title">一张网项目-运行管理</div>
                    <div>
                     <span>您好,admin</span>&nbsp;&nbsp;
                     <el-button type="text" @click="logOut">退出</el-button>
@@ -62,12 +66,11 @@
     </div>
 </template>
 <script>
-import navTags from '@/assets/navTag.js'
 import navtags from './navTagsChildren.vue'
  export default {
      data(){
          return {
-             isCollapse:false
+             isCollapse:false,
          }
      },
     methods: {
@@ -78,13 +81,10 @@ import navtags from './navTagsChildren.vue'
         // console.log(key, keyPath);
       },  
       activationCallback(index,indexPath){ //激活菜单时的回调
-        console.log('index:'+index)
-        console.log('indexPath:'+indexPath)
-        var navItem = navTags.filter(item => item.path === index)[0]; //得到用户点击的菜单项
-        this.$store.commit('addNavItem',navItem)   //使用mutations添加数据到state中
+        // console.log('index:'+index)
+        // console.log('indexPath:'+indexPath)
       }, 
       logOut(){ //退出按钮
-        //   window.location.reload()
           this.$router.push({name:'Login'})
       },
       toggleContraction(){

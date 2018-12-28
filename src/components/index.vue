@@ -6,7 +6,9 @@
             <el-col :span="8"><div class="grid-content">
                 <div class="test1">
                     <div class="test1box">
-                        <h5>{{num}}</h5>
+                        <h5>
+                            <count-to :end-val="endVal"></count-to>
+                        </h5>
                         <span></span>
                         <p>日活跃数</p>
                     </div>
@@ -64,9 +66,13 @@
 </template>
 
 <script>
+import CountTo from './count-to'
  export default {
+  name:'count_to',
+  components:{CountTo},
   data: function () {
     return {
+      endVal:1000.45,
       chartData: {
         columns: ['日期', '访问用户', '下单用户', '下单率'],
         rows: [
@@ -90,7 +96,7 @@
             clearInterval(Time)
           }
       },0.00001)
-  }
+  },
 }   
 </script>
 
